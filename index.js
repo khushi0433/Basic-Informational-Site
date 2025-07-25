@@ -16,7 +16,7 @@ const server = createServer((req, res) => {
         });
     } else if (reqUrl.pathname === "/about") {
         res.writeHead(200, { "Content-Type": "text/html" });
-        fs.readFile("./files/about.html", "utf8", (err, data) => {
+        fs.readFile("./about.html", "utf8", (err, data) => {
             if (err) throw err;
             res.end(data);
         });
