@@ -22,13 +22,13 @@ const server = createServer((req, res) => {
         });
     } else if (reqUrl.pathname === "/contact-me") {
         res.writeHead(200, { "Content-Type": "text/html" });
-        fs.readFile("./files/contact-me.html", "utf8", (err, data) => {
+        fs.readFile(".contact-me.html", "utf8", (err, data) => {
             if (err) throw err;
             res.end(data);
         });
     } else {
         res.writeHead(404, { "Content-Type": "text/html" });
-        fs.readFile("./files/404.html", "utf8", (err, data) => {
+        fs.readFile("./404.html", "utf8", (err, data) => {
             if (err) throw err;
             res.end(data);
         });
