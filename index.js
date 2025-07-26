@@ -1,51 +1,32 @@
+const express = require("express");
+const path = require("path");
 require("dotenv").config();
 
-const { createServer } = require("http");
-const url = require("url");
-const fs = require("fs");
+const app = express();
+const HOST = "127.0.0.1";
+const PORT = process.env.PORT || 3000;
 
-const hostname = 'localhost';
-const port = process.env.PORT || 3000;
-
-const server = createServer((req, res) => {
-    const reqUrl = url.parse(req.url, true);
-
-    if (reqUrl.pathname === "/") {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        fs.readFile("./index.html", "utf8", (err, data) => {
-            if (err) throw err;
-            res.end(data);
-        });
-    } else if (reqUrl.pathname === "/about") {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        fs.readFile("./about.html", "utf8", (err, data) => {
-            if (err) throw err;
-            res.end(data);
-        });
-    } else if (reqUrl.pathname === "/contact-me") {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        fs.readFile("./contact-me.html", "utf8", (err, data) => {
-            if (err) throw err;
-            res.end(data);
-        });
-    } else {
-        res.writeHead(404, { "Content-Type": "text/html" });
-        fs.readFile("./404.html", "utf8", (err, data) => {
-            if (err) throw err;
-            res.end(data);
-        });
-    }
-
-    console.log(`Request URL: ${reqUrl.pathname}`);
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
-server.listen(port, hostname, () => {
-    console.log("server started");
-    console.log(`Server running at http://${hostname}:${port}/`);
+app.get("/about", (req, res) => {
+    res.sendFile(path.join(__dirname, "about.html"));
 });
 
+app.get("/contact", (req, res) => {
+    res.sendFile(path.join(__dirname, "contact-me.html"));
+});
 
-if (process.env.NODE_ENV === "prod") {
-  console.log("Enviroment:", process.env.NODE_ENV);
-  console.log("Secret Video:", process.env.VIDEO_URL);
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "404.html"));
+});
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server running at http://${HOST}:${PORT}/`);
+});
+
+if (process.env.NODE_ENV === "production") {
+    console.log("Express is running in production mode " + process.env.NODE_ENV);
+    console.log("VIDEO_URL: " + process.env.VIDEO_URL);
 }
